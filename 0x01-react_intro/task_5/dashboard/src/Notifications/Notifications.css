@@ -1,16 +1,15 @@
-:root {
-	--primar-color: #E11D3F;
-}
-
 .Notifications {
-	border: 1px solid var(--primar-color);
-	padding: 1rem;
+  padding: 1em;
+  border: 2px dashed red;
+  position: absolute;
+  top: 10px;
+  width: 95vw;
 }
 
-[data-priority="default"] {
-	color: blue;
+li[data="default"] {
+  color: blue;
 }
 
-[data-priority="urgent"] {
-	color: red;
+li[data="urgent"] {
+  color: red;
 }
