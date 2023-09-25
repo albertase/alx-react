@@ -1,31 +1,27 @@
-import React from 'react'
-import close_icon from '../assets/close-icon.png'
-import { getLatestNotification } from '../utils/utils'
-import NotificationItem from './NotificationItem'
+import React from "react";
+import "./Notifications.css";
+import closeIcon from "../assets/close-icon.png";
+import { getLatestNotification } from "../utils/utils";
+import NotificationItem from "./NotificationItem";
 
-import './Notifications.css'
-
-export default function Notification(props) {
+function Notifications() {
   return (
-	<div className="Notifications">
-	  <button style={{ 
-		  position: 'absolute',
-		  background: 'transparent',
-		  border: 'none',
-		  right: '20px',
-		 }} 
-		 aria-label='close' 
-		 onClick={() => {
-		  console.log('Close button has been clicked');
-	  }}>
-	    <img src={close_icon} alt="close" height="15px" width="15px"></img>
-	  </button>
-	  <p>Here is the list of notifications</p>
-	  <ul>
-		  <NotificationItem type="default" value="New course available" />
-		  <NotificationItem type="urgent" value="New resume available" />
-		  <NotificationItem type="urgent" html={{ __html: getLatestNotification() }} />
-	  </ul>
-	</div>
-  )
+    <div className="Notifications">
+      <button
+        style={{ color: "#3a3a3a", fontWeight: "bold", background: "none", border: "none", fontSize: "10px", position: "absolute", right: "2px", top: "2px", cursor: "pointer" }}
+        aria-label="Close"
+        onClick={console.log("Close button has been clicked")}
+      >
+        <img src={closeIcon} alt="closeIcon" width="10px" />
+      </button>
+      <p>Here is the list of notifications</p>
+      <ul>
+        <NotificationItem type="default" value="New course available" />
+        <NotificationItem type="urgent" value="New resume available" />
+        <NotificationItem type="urgent" html={getLatestNotification()} />
+      </ul>
+    </div>
+  );
 }
+
+export default Notifications;

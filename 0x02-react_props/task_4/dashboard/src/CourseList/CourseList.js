@@ -1,23 +1,21 @@
-import React from 'react'
-import CourseListRow from './CourseListRow'
-import './CourseList.css'
+import React from "react";
+import "./CourseList.css";
+import CourseListRow from "./CourseListRow";
 
-
-const CourseList = ({ }) => {
-	return (
-		<table id="CourseList">
-			<thead>
-				<CourseListRow isHeader={true} textFirstCell="Available Courses" />
-				<CourseListRow isHeader={true} textFirstCell="Course name" textSecondCell="Credit" />
-			</thead>
-			<tbody id="CourseBody">
-				<CourseListRow isHeader={false} textFirstCell="ES6" textSecondCell="60" />
-				<CourseListRow isHeader={false} textFirstCell="Webpack" textSecondCell="20" />
-				<CourseListRow isHeader={false} textFirstCell="React" textSecondCell="40" />
-			</tbody>
-		</table>
-	)
+function CourseList() {
+  return (
+    <table id="CourseList">
+      <thead>
+        <CourseListRow textFirstCell="Available courses" textSecondCell={null} isHeader={true} />
+        <CourseListRow textFirstCell="Course name" textSecondCell="Credit" isHeader={true} />
+      </thead>
+      <tbody>
+        <CourseListRow textFirstCell="ES6" textSecondCell="60" isHeader={false} />
+        <CourseListRow textFirstCell="Webpack" textSecondCell="20" isHeader={false} />
+        <CourseListRow textFirstCell="React" textSecondCell="40" isHeader={false} />
+      </tbody>
+    </table>
+  );
 }
 
-
-export default CourseList
+export default CourseList;
