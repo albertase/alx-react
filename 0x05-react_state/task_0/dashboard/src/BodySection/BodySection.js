@@ -1,51 +1,38 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { StyleSheet, css } from "aphrodite";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { StyleSheet, css } from 'aphrodite';
 
-class BodySection extends Component {
-  constructor(props) {
-    super(props);
-  }
+class BodySection extends React.Component {
+	constructor(props) {
+		super(props);
+	}
 
-  render() {
-    const { children, title } = this.props;
-    return (
-      <div className={css(styles.bodySection)}>
-        <h2 className={css(styles.bodySectionH2)}>{title}</h2>
-        {children}
-      </div>
-    );
-  }
+	render() {
+		const { title, children } = this.props;
+		return (
+			<React.Fragment>
+				<div className={css(styles.bodySection)}>
+					<h2>{title}</h2>
+					{children}
+				</div>
+			</React.Fragment>
+		);
+	}
 }
 
-BodySection.defaultProps = {
-  title: "",
-};
+const styles = StyleSheet.create({
+	bodySection: {
+		fontFamily: 'Arial, Helvetica, sans-serif',
+		paddingLeft: '50px'
+	}
+});
 
 BodySection.propTypes = {
-  title: PropTypes.string,
+	title: PropTypes.string
 };
 
-const screenSize = {
-  small: "@media screen and (max-width: 900px)",
+BodySection.defaultProps = {
+	title: ""
 };
-
-const styles = StyleSheet.create({
-  bodySection: {
-    display: "flex",
-    flexWrap: "wrap",
-    width: "100%",
-    [screenSize.small]: {
-      boxSizing: "border-box",
-      paddingLeft: "50px",
-      paddingRight: "50px",
-      paddingBottom: "20px",
-    },
-  },
-
-  bodySectionH2: {
-    width: "100%",
-  },
-});
 
 export default BodySection;

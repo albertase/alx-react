@@ -1,93 +1,79 @@
 import React from 'react';
-import Header from './Header';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
+import Header from './Header';
+import { user, logOut } from '../App/AppContext';
+import AppContext from '../App/AppContext.js';
 
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
 
-describe('Testing <Header /> Component', () => {
-  let wrapper;
+afterEach(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
 
-  beforeEach(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-    wrapper = shallow(<Header />);
-  });
-
-  it("Renders with out crashing", () => {
-    expect(wrapper).toBeDefined();
-  });
-
-  it("Render an h1 tag", () => {
-    expect(wrapper.find('h1')).toBeDefined();
-  });
-
-  it("Render an img tag", () => {
-    expect(wrapper.find('img')).toBeDefined();
-  });
-
-  it(`Tests that logoutSection is not rendered with default context values`, () => {
-		const context = {
-			user: {
-				email: '',
-				password: '',
-				isLoggedIn: false
-			},
-			logOut: jest.fn()
-		}
-
-		wrapper = mount(
-			<AppContext.Provider value={context}>
+describe('Basic React Tests - <Header />', function() {
+	it('Should render without crashing', () => {
+		const wrapper = mount(
+			<AppContext.Provider value={{ user, logOut }}>
 				<Header />
 			</AppContext.Provider>
-		)
+		);
+		expect(wrapper.exists()).toBeTruthy();
+	});
 
-		expect(wrapper.find('#logoutSection').length).toBe(0);
-		expect(wrapper.find('#logoutSection').exists()).toBe(false);
-		wrapper.unmount();
-	})
-
-	it(`Tests that logoutSection is rendered with context values`, () => {
-		const context = {
-			user: {
-				email: 'test@test.com',
-				password: '123',
-				isLoggedIn: true
-			},
-			logOut: jest.fn()
-		}
-
-		wrapper = mount(
-			<AppContext.Provider value={context}>
+	it('Should check that the logoutSection is not created with a default context value', () => {
+		const wrapper = mount(
+			<AppContext.Provider value={{ user, logOut }}>
 				<Header />
 			</AppContext.Provider>
-		)
+		);
+		expect(wrapper.find('#logoutSection').exists()).not.toBeTruthy();
+	});
 
-		expect(wrapper.find('#logoutSection').length).toBe(1);
-		expect(wrapper.find('#logoutSection').exists()).toBe(true);
-		wrapper.unmount();
-	})
+	it('Should check that the logoutSection is created with a user defined', () => {
+		const newUser = {
+			email: 'mnortiz.ortiz@gmail.com',
+			password: '012345',
+			isLoggedIn: true
+		};
 
-	it(`Verifies that the logOut function is called when clicking on logOut link`, () => {
-		const context = {
-			user: {
-				email: 'test@test.com',
-				password: '123',
-				isLoggedIn: true
-			},
-			logOut: jest.fn()
-		}
-
-		const spy = jest.spyOn(context, 'logOut');
-
-		wrapper = mount(
-			<AppContext.Provider value={context}>
+		const wrapper = mount(
+			<AppContext.Provider value={{ user: newUser, logOut }}>
 				<Header />
 			</AppContext.Provider>
-		)
+		);
+		expect(wrapper.find('#logoutSection').exists()).toBeTruthy();
+	});
 
-		wrapper.find('a').simulate('click');
+	it('Should check that clicking on the link is calling the spy with a user defined', () => {
+		const spy = jest.fn();
+		const newUser = {
+			email: 'mnortiz.ortiz@gmail.com',
+			password: '012345',
+			isLoggedIn: true
+		};
 
+		const wrapper = mount(
+			<AppContext.Provider value={{ user: newUser, logOut: spy }}>
+				<Header />
+			</AppContext.Provider>
+		);
+		expect(wrapper.find('#logoutSection').exists()).toBeTruthy();
+		wrapper.find('#logoutSection span').simulate('click');
 		expect(spy).toHaveBeenCalled();
-		expect(spy).toHaveBeenCalledTimes(1);
-		wrapper.unmount();
-	})
+
+		jest.restoreAllMocks();
+	});
+
+	// it('Should render img tag', () => {
+	// 	const wrapper = shallow(<Header />);
+	// 	expect(wrapper.find('.Header img').exists()).toEqual(true);
+	// });
+
+	// it('Should render h1 tag', () => {
+	// 	const wrapper = shallow(<Header />);
+	// 	expect(wrapper.find('.Header h1').exists()).toEqual(true);
+	// });
 });

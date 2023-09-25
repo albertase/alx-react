@@ -1,6 +1,8 @@
 # 0x05. React state
 
-## Learning Objectives
+# Learning Objectives
+At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+
 - What the state of a component or a container is
 - The lifecycle of a component
 - How to modify a state and execute code in the right order
@@ -10,9 +12,8 @@
 - The use of a React Hook and how to create one
 - How to test State changes with Enzyme
 
-## Tasks
-0. Adding a local state for notifications
-1. Controlled components and state callback
-2. Context
-3. Context consumer & advanced state
-4. Introduction to react hook
+# Requirements
+- All your files will be interpreted/compiled on Ubuntu 18.04 LTS using node 12.x.x and npm 6.x.x
+- Allowed editors: vi, vim, emacs, Visual Studio Code
+- All your files should end with a new line
+- A README.md file, at the root of the folder of the project, is mandatory

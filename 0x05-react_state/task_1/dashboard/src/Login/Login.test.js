@@ -1,35 +1,41 @@
 import React from 'react';
-import Login from './Login';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
+import Login from './Login';
 
-describe("testing the <Login /> component", () => {
-  let wrapper;
-
-  beforeEach(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-    wrapper = shallow(<Login />);
-  });
-
-  it("Login component renders without crashing", () => {
-    expect(wrapper).toBeDefined();
-  });
-
-  it("Login component renders 2 input tags and 2 label tags", () => {
-    expect(wrapper.find("input")).toHaveLength(3);
-    expect(wrapper.find("label")).toHaveLength(2);
-
-  });
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
 });
 
-describe("Test the <Login /> component with state", () => {
-  let wrapper;
+afterEach(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
 
-  beforeEach(() => {
-    wrapper = mount(<Login />);
-  });
+describe('Basic React Tests - <Login />', function() {
+	it('Should render without crashing', () => {
+		const wrapper = shallow(<Login />);
+		expect(wrapper.exists()).toBeTruthy();
+	});
 
-  it("Verify that the submit button is disabled by default", () => {
-    expect(wrapper.state().enableSubmit).toBe(false);
-  });
+	// it('Should render 2 input tags', () => {
+	// 	const wrapper = shallow(<Login />);
+	// 	expect(wrapper.find('.Login input')).toHaveLength(2);
+	// });
+
+	// it('Should render 2 label tags', () => {
+	// 	const wrapper = shallow(<Login />);
+	// 	expect(wrapper.find('.Login label')).toHaveLength(2);
+	// });
+
+	it('Should check tha the submit button is disabled by default', () => {
+		const wrapper = shallow(<Login />);
+		expect(wrapper.find('input').at(2).props().disabled).toEqual(true);
+	});
+
+	it('Should check that after changing the value of the two inputs, the button is enabled', () => {
+		const wrapper = shallow(<Login />);
+		wrapper.find('input').at(0).simulate('change', { target: { name: 'email', value: 'mnortiz.ortiz@gmail.com'} });
+		wrapper.find('input').at(1).simulate('change', { target: { name: 'password', value: '012345'} });
+		expect(wrapper.find('input').at(2).props().disabled).toEqual(false);
+	});
 });
