@@ -1,11 +1,13 @@
-:root {
-    --holberton-red: #e1484c;
-}
-
 .App-body {
-    padding: 36px 24px;
+  font-size: 1.5rem;
+  padding: 25px;
 }
 
-.App-body input {
-    margin: 0 16px 0 8px;
+
+.App-body .form label {
+  padding: 5px;
+  
+}
+.App-body .form input {
+  padding: 5px;
 }

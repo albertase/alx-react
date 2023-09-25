@@ -1,23 +1,21 @@
-import React from "react";
-import { shallow } from "enzyme";
-import NotificationItem from "./NotificationItem";
-import { StyleSheetTestUtils } from "aphrodite";
+import React from 'react';
+import NotificationItem from "./NotificationItem.js"
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+configure({adapter: new Adapter()});
 
-describe("Testing <NotificationItem />", () => {
-  let wrapper;
 
-  beforeEach(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-  });
+it(" rendering of the component", () => {
+    const wrapper = shallow(<NotificationItem type="default" value="test"/>)
+    expect(wrapper.exists()).toEqual(true);
+})
 
-  it("<NotificationItem /> renders without crashing", () => {
-    wrapper = shallow(<NotificationItem />);
-    expect(wrapper.exists());
-  });
+it("renders the correct Props ", () => {
+    const wrapper = shallow(<NotificationItem type="default" value="test"/>)
+    expect(wrapper.props()).toContain('{"children": "test", "data-priority": "default", "onClick": [Function onClick]}')
+})
 
-  it("<NotificationItem />  renders the correct html by passing dummy type and value props,", () => {
-    wrapper = shallow(<NotificationItem type="default" value="test" />);
-    expect(wrapper.find("li").text()).toBe("test");
-    expect(wrapper.find("li").prop("data-notification-type")).toBe("default");
-  });
-});
+it("renders the correct html", () => {
+    const wrapper = shallow(< NotificationItem type="urgent" html={{ __html: '<u>test</u>' }} />)
+    expect(wrapper.html()).toEqual('<li data-priority=\"urgent\"><u>test</u></li>')
+})

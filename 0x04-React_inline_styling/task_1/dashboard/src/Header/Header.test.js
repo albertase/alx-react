@@ -1,23 +1,16 @@
-import React from "react";
+import React from 'react';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import Header from "./Header";
-import { shallow } from "enzyme";
-import { StyleSheetTestUtils } from "aphrodite";
+configure({adapter: new Adapter()});
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
-});
-afterEach(() => {
-  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-});
 
-describe("Header", () => {
-  it("render without crashing", () => {
+it('App render class App-header', () => {
     const wrapper = shallow(<Header />);
-    expect(wrapper.exists()).toEqual(true);
+    expect(wrapper.find('div.App-header')).toHaveLength(1);
   });
-  it("should render a h1", () => {
-    const wrapper = shallow(<Header />);
-    expect(wrapper.exists("img")).toEqual(true);
-    expect(wrapper.containsMatchingElement(<h1>School dashboard</h1>)).toEqual(true);
-  });
-});
+
+  it("render img", () => {
+      const wrapper = shallow(<Header/>)
+      expect(wrapper.find('div.App-header img')).toHaveLength(1);
+  })

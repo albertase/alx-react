@@ -1,49 +1,47 @@
-import React from 'react';
-import PropType from 'prop-types';
-import CourseShape from './CourseShape';
-import CourseListRow from './CourseListRow';
-import {  StyleSheet, css } from 'aphrodite';
+import React from 'react'
+import CourseListRow from './CourseListRow.js'
+import { StyleSheet, css } from "aphrodite";
+import CourseShape from './CourseShape.js'
+import PropTypes from 'prop-types';
 
+function CourseList({ listCourses }){
+    return(
+        <table className={css(styles.list)} id="CourseList">
+        <thead className="title">
+            <CourseListRow isHeader textFirstCell="Available courses" />
+            <CourseListRow isHeader textFirstCell="Course name" textSecondCell="Credit" />
+        </thead>
+        <tbody>
+        {!listCourses.length && (
+          <CourseListRow textFirstCell='No course available yet' isHeader={false}/>
+        )}
 
-function CourseList({ listCourses }) {
-  return (
-    <table id="CourseList" cellPadding="0" cellSpacing="0" className={css(courseListStyles.table)}>
-      <thead>
-        <CourseListRow isHeader={true} textFirstCell='Available courses' />
-        <CourseListRow isHeader={true} textFirstCell='Course name' textSecondCell="Credit" />
-      </thead>
-      <tbody>
-        {
-        listCourses.length == 0 ?
-          <CourseListRow isHeader={false} textFirstCell='No course available yet'/>
-        : null
-        }
-        {
-          listCourses.map((val, idx) => {
-            return <CourseListRow isHeader={false} textFirstCell={val.name} textSecondCell={val.credit} key={val.id}/>
-          })
-        }
+        {listCourses.map((course) => (
+          <CourseListRow key={course.id} textFirstCell={course.name} textSecondCell={course.credit} isHeader={false}/>
+        ))}
       </tbody>
     </table>
-  );
+    )
+}
+CourseList.propTypes = {
+  listCourses: PropTypes.arrayOf(CourseShape),
+};
+CourseList.defaultProps = {
+    listCourses: [],
 };
 
-const courseListStyles = StyleSheet.create({
-	table: {
-		display: 'table',
-		border: '1px solid',
-		borderCollapse: 'collapse',
-		margin: '2rem auto 0 auto',
-		width: '90%',
-	}
+const Css = {
+  borderTableColor: "rgb(170, 170, 170);",
+};
+
+const styles = StyleSheet.create({
+  list: {
+    border: `1px solid ${Css.borderTableColor}`,
+    borderCollapse: "collapse",
+    width: "95%",
+    margin: "40px auto 0 auto",
+  },
 });
 
-CourseList.defaultProps = {
-  listCourses: []
-};
 
-CourseList.propType = {
-  listCourses: PropType.arrayOf(CourseShape)
-};
-
-export default CourseList;
+export default CourseList

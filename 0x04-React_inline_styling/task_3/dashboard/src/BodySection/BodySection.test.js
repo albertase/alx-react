@@ -1,19 +1,14 @@
-import React from "react";
-import { shallow } from 'enzyme';
-import BodySection from './BodySection';
-import { StyleSheetTestUtils } from 'aphrodite';
+import React from 'react';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import BodySection from "./BodySection.js";
+configure({adapter: new Adapter()});
 
-describe("Testing BodySection Component",() => {
-  beforeEach(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
-  });
 
-  it(' checking that shallowing the component should render correctly the children and one h2 element', () => {
-    const wrapper = shallow(<BodySection title="test title"><p>test children node</p></BodySection> );
-    const h = wrapper.find('h2').text();
-    const p = wrapper.find('p').text();
-    expect(h).toEqual("test title");
-    expect(p).toEqual("test children node");
-    expect(wrapper.containsAllMatchingElements([h, p])).toEqual(true);
-  });
-});
+it("ender correctly the children and one h2 element", () => {
+    const wrapper = shallow(<BodySection title='News from the School'>
+    <p>Log in the School addEventListener </p>
+  </BodySection> )
+
+  expect(wrapper.html()).toContain('<div class="bodySection"><h2>News from the School</h2><p>Log in the School addEventListener </p></div>')
+})
