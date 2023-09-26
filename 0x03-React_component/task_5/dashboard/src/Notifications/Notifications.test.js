@@ -3,6 +3,7 @@ import { shallow } from "enzyme";
 import { getLatestNotification } from "../utils/utils";
 import Notifications from "./Notifications";
 import NotificationItem from "./NotificationItem";
+import { it } from "node:test";
 
 describe("Notifications tests", () => {
   it("renders Notifications component without crashing", () => {
@@ -68,5 +69,52 @@ describe("Notifications tests", () => {
     wrapper.instance().markAsRead(1);
     expect(consoleLogSpy).toHaveBeenCalledWith('Notification 1 has been marked as read');
     consoleLogSpy.mockRestore();
+  });
+
+  it("doesn't rerender withthe same listNotifications props", () => {
+    const listNotifications = [
+      { id: 1, html: { __html: "Notification 1" }, type: "default", value: "Notification 1"},
+      { id: 1, html: { __html: "Notification 2" }, type: "urgent", value: "Notification 2"},
+    ];
+    const wrapper = shallow(<Notifications displayDrawer={true} listNotifications={listNotifications} />);
+    const instance = wrapper.instance();
+
+    instance.setState = jest.fn();
+
+    wrapper.setProps({ displayDrawer: true, listNotifications: listNotifications});
+
+    expect(instance.setState).not.toHaveBeenCalled();
+  });
+
+  it("rerenders with a longer listNotifications props", () => {
+    const listNotifications1 = [
+      {
+        id: 1,
+        html: { __html: "Notification 1" },
+        type: "default",
+        value: "Notification 1"
+      },
+    ]
+    const listNotifications2 = [
+      {
+        id: 1,
+        html: { __html: "Notification 1" },
+        type: "default", value: "Notification 1"
+      },
+      {
+        id: 2,
+        html: { __html: "Notification 2" },
+        type: "urgent",
+        value: "Notification 2"
+      },
+    ];
+    const wrapper = shallow(<Notifications displayDrawer={true} listNotifications={listNotifications1} />);
+    const instance = wrapper.instance();
+    
+    instance.setState = jest.fn();
+
+    wrapper.setProps({ displayDrawer: true, listNotifications: listNotifications2 });
+    
+    expect(instance.setState).toHaveBeenCalled();
   });
 });
