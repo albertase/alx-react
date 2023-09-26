@@ -1,8 +1,8 @@
 .Notifications {
-  border: 2px dashed red;
   padding: 1em;
+  border: 2px dashed red;
   position: absolute;
-  top: 2.5em;
+  top: 1.8em;
   right: 0;
 }
 
@@ -23,16 +23,3 @@
 [data-notification-type="urgent"] {
   color: red;
 }
-
-.btn {
-  color: #3a3a3a;
-  font-weight: bold;
-  background: none;
-  border: none;
-  font-size: 10px;
-  position: absolute;
-  right: 2px;
-  top: 2px;
-  cursor: pointer;
-}
-            

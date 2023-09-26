@@ -1,31 +1,41 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { render } from '@testing-library/react';
-import CourseList from './CourseList';
-import CourseListRow from './CourseListRow';
+import React from "react";
+import CourseList from "./CourseList";
+import CourseListRow from "./CourseListRow";
+import { shallow } from "enzyme";
 
-describe('CourseList', () => {
-  it('renders CourseList component without crashing', () => {
-    const component = shallow(<CourseList listCourses={[]} />);
-    expect(component.exists()).toBe(true);
-    render(<CourseList />);
+const listCourses = [
+  { id: 1, name: "ES6", credit: 60 },
+  { id: 2, name: "Webpack", credit: 20 },
+  { id: 3, name: "React", credit: 40 },
+];
+
+describe("CourseList component tests", () => {
+  it("should render without crashing", () => {
+    const wrapper = shallow(<CourseList />);
+
+    expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders the 5 different rows', () => {
-    const { container } = render(<CourseList />);
-    const thElements = container.querySelectorAll('th');
-    const tdElements = container.querySelectorAll('td');
-    expect(thElements.length).toBe(2);
-    expect(tdElements.length).toBe(6);
-  });
-
-  it('render the correct number of CourseListRow componenets', () => {
-    const listCourses = [
-      { id: 1, name: 'Course 1', credit: 60 },
-      { id: 2, name: 'Course 2', credit: 20 },
-      { id: 3, name: 'Course 3', credit: 40 },
-    ];
+  it("renders 5 different rows", () => {
     const wrapper = shallow(<CourseList listCourses={listCourses} />);
-    expect(wrapper.find(CourseListRow)).toHaveLength(listCourses.length);
+
+    expect(wrapper.find("thead").children()).toHaveLength(2);
+    wrapper.find("thead").forEach((node) => {
+      expect(node.equals(<CourseListRow textFirstCell="Course name" textSecondCell="Credit" isHeader={true} />));
+    });
+
+    expect(wrapper.find("tbody").children()).toHaveLength(3);
+    expect(wrapper.find("tbody").childAt(0).html()).toEqual('<tr style="background-color:#f5f5f5ab"><td>ES6</td><td>60</td></tr>');
+    expect(wrapper.find("tbody").childAt(1).html()).toEqual('<tr style="background-color:#f5f5f5ab"><td>Webpack</td><td>20</td></tr>');
+    expect(wrapper.find("tbody").childAt(2).html()).toEqual('<tr style="background-color:#f5f5f5ab"><td>React</td><td>40</td></tr>');
+  });
+
+  it("renders correctely when passed a list of courses", () => {
+    const wrapper = shallow(<CourseList listCourses={listCourses} />);
+
+    expect(wrapper.find("tbody").children()).toHaveLength(3);
+    expect(wrapper.find("tbody").childAt(0).html()).toEqual('<tr style="background-color:#f5f5f5ab"><td>ES6</td><td>60</td></tr>');
+    expect(wrapper.find("tbody").childAt(1).html()).toEqual('<tr style="background-color:#f5f5f5ab"><td>Webpack</td><td>20</td></tr>');
+    expect(wrapper.find("tbody").childAt(2).html()).toEqual('<tr style="background-color:#f5f5f5ab"><td>React</td><td>40</td></tr>');
   });
 });

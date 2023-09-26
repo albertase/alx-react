@@ -4,8 +4,6 @@ table {
   border: 1px solid #ddd;
   font-size: 1.2rem;
   margin-bottom: 15em;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 th {
@@ -15,6 +13,11 @@ th {
 th,
 td {
   width: 80%;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 tr:nth-child(2) {

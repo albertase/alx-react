@@ -1,33 +1,31 @@
-import React from 'react';
-import { mount } from 'enzyme';
-import WithLogging from './WithLogging';
-import { afterEach, before, describe } from 'node:test';
+import React from "react";
+import { shallow } from "enzyme";
+import WithLogging from "./WithLogging";
 
-describe('WithLogging tests', () => {
-  let consoleLogSpy;
+const TestComponent = () => <p>Test Component</p>;
 
-  beforeEach(() => {
-    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+describe("WithLogging tests", () => {
+  it("should call console.log on mount and dismount", () => {
+    const spy = jest.spyOn(console, "log").mockImplementation();
+    const NewComponent = WithLogging(TestComponent);
+    const wrapper = shallow(<NewComponent />);
+
+    expect(spy).toBeCalledTimes(1);
+    wrapper.unmount();
+    expect(spy).toBeCalledTimes(2);
+    spy.mockRestore();
   });
 
-  afterEach(() => {
-    consoleLogSpy.mockRestore();
-  });
+  it("should log out the right message on mount and on unmount", () => {
+    const spy = jest.spyOn(console, "log").mockImplementation();
+    const NewComponent = WithLogging(TestComponent);
+    const wrapper = shallow(<NewComponent />);
 
-  it('should log mount and unmount messages for pure HTML element', () => {
-    const WrappedComponent = WithLogging(() => <p />);
-    const component = mount(<WrappedComponent />);
-    expect(consoleLogSpy).toHaveBeenCalledWith('Component Component is mounted on componentDidMount()');
-    component.unmount();
-    expect(consoleLogSpy).toHaveBeenCalledWith('Component Component is going to unmount on componentWillUnmount()');
-  });
-
-  it('should log mount and unmount messages for login component', () => {
-    const Login = () => <div>Login component content</div>;
-    const WrappedComponent = WithLogging(Login);
-    const component = mount(<WrappedComponent />);
-    expect(consoleLogSpy).toHaveBeenCalledWith('Component Login is mounted on componentDidMount()');
-    component.unmount();
-    expect(consoleLogSpy).toHaveBeenCalledWith('Component Login is going to unmount on componentWillUnmount()');
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith("Component TestComponent is mounted");
+    wrapper.unmount();
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toBeCalledWith("Component TestComponent is going to unmount");
+    spy.mockRestore();
   });
 });

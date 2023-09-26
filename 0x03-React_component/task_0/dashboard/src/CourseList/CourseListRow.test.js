@@ -1,30 +1,26 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import CourseListRow from './CourseListRow';
+import React from "react";
+import CourseListRow from "./CourseListRow";
+import { shallow } from "enzyme";
 
-describe('CourseListRow', () => {
-  it('renders one cell when isHeader is true', () => {
-    const { container } = render(<CourseListRow isHeader={true} textFirstCell='Header Cell' />);
-    const thElement = container.querySelector('th');
-    expect(thElement).toBeInTheDocument();
-    expect(thElement.getAttribute('colSpan')).toBe('2');
+describe("Course List Row component test", () => {
+  it("should render without crashing", () => {
+    const wrapper = shallow(<CourseListRow textFirstCell="test" />);
+
+    expect(wrapper.exists()).toBe(true);
   });
 
-  it('renders isHeader true and textSecondCell exists', () => {
-    const { container } = render(
-      <CourseListRow isHeader={true} textFirstCell="Header Cell 1" textSecondCell="Header Cell 2" />
-    );
-    const thElement = container.querySelectorAll('th');
-    expect(thElement.length).toBe(2);
+  it("should render one cell with colspan = 2 when textSecondCell null", () => {
+    const wrapper = shallow(<CourseListRow isHeader={true} textFirstCell="test" textSecondCell={null} />);
+
+    expect(wrapper.find("tr").children()).toHaveLength(1);
+    expect(wrapper.find("tr").childAt(0).html()).toEqual('<th style="background-color:#deb5b545" colSpan="2">test</th>');
   });
 
-  it('renders correctly when isHeader is false', () => {
-    const { container } = render(
-      <CourseListRow isHeader={false} textFirstCell="Data Cell 1" textSecondCell="Data Cell 2" />
-    );
-    const trElement = container.querySelector('tr');
-    const tdElement = container.querySelectorAll('td');
-    expect(trElement).toBeInTheDocument();
-    expect(tdElement.length).toBe(2);
+  it("should render two cells when textSecondCell not null", () => {
+    const wrapper = shallow(<CourseListRow isHeader={false} textFirstCell="test" textSecondCell="test" />);
+
+    expect(wrapper.find("tr").children()).toHaveLength(2);
+    expect(wrapper.find("tr").childAt(0).html()).toEqual("<td>test</td>");
+    expect(wrapper.find("tr").childAt(1).html()).toEqual("<td>test</td>");
   });
 });
