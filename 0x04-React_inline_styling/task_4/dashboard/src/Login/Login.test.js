@@ -1,20 +1,23 @@
-import React from 'react';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow } from "enzyme";
+import React from "react";
 import Login from "./Login";
-configure({adapter: new Adapter()});
+import { StyleSheetTestUtils } from "aphrodite";
 
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
+afterEach(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
 
-it('App render class App-body', () => {
+describe("Header", () => {
+  it("should render without crashing", () => {
     const wrapper = shallow(<Login />);
-    expect(wrapper.find('div.App-body')).toHaveLength(1);
+    expect(wrapper.exists()).toEqual(true);
   });
-it("renders 2 input ", () => {
-  const wrapper = shallow(<Login />)
-  expect(wrapper.find('div.App-body input')).toHaveLength(2)
-})
-
-it("renders 2 label ", () => {
-  const wrapper = shallow(<Login />)
-  expect(wrapper.find('div.App-body label')).toHaveLength(2)
-})
+  it("should have 2 input tags and 2 label tags", () => {
+    const wrapper = shallow(<Login />);
+    expect(wrapper.find("label")).toHaveLength(2);
+    expect(wrapper.find("input")).toHaveLength(2);
+  });
+});

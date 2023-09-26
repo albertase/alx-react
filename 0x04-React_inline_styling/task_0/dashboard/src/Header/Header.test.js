@@ -1,16 +1,15 @@
-import React from 'react';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import React from "react";
 import Header from "./Header";
-configure({adapter: new Adapter()});
+import { shallow } from "enzyme";
 
-
-it('App render class App-header', () => {
+describe("Header", () => {
+  it("render without crashing", () => {
     const wrapper = shallow(<Header />);
-    expect(wrapper.find('div.App-header')).toHaveLength(1);
+    expect(wrapper.exists()).toEqual(true);
   });
-
-  it("render img", () => {
-      const wrapper = shallow(<Header/>)
-      expect(wrapper.find('div.App-header img')).toHaveLength(1);
-  })
+  it("should render a h1", () => {
+    const wrapper = shallow(<Header />);
+    expect(wrapper.exists("img")).toEqual(true);
+    expect(wrapper.containsMatchingElement(<h1>School dashboard</h1>)).toEqual(true);
+  });
+});
